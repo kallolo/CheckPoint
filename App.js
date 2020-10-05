@@ -7,6 +7,7 @@ import { setNavigator } from './src/navigationRef';
 import Cek from './src/screens/Cek';
 import Contoh from './src/screens/Contoh';
 import Home from './src/screens/Home';
+import InputLokasi from './src/screens/InputLokasi';
 
 const theme = {
   ...DefaultTheme,
@@ -21,6 +22,7 @@ const theme = {
 const NavContent = createStackNavigator({
   Home : Home,
   Cek : Cek,
+  InputLokasi : InputLokasi,
   Contoh : {
     screen : Contoh,
     navigationOptions:{

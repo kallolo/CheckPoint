@@ -179,8 +179,43 @@ const LocationContextProvider = (props) => {
       navigate('Home')
     }
 
+    const CekRadius = async(lokasiTujuan) =>{
+      const cekLocationPermission = await hasLocationPermission();
+    
+      let jarak;
+  
+      if (!cekLocationPermission) {
+        return;
+      }
+        watchId = Geolocation.watchPosition(
+          (position) => {
+              dispatch({type:'setLocationCurrent', data :position})
+              // jarak
+              jarak = getDistance(position.coords,lokasiTujuan);
+              console.log('Jarak '+jarak+' Meter')
+              dispatch({type:'setJarak', data :jarak})
+
+              //radius
+              radius = isPointWithinRadius(position.coords, lokasiTujuan, 5);
+              console.log(radius)
+              dispatch({type:'setRadius', data :radius})
+
+              console.log(position);
+          },
+          (error) => {
+            console.log(error);
+          },
+          {
+            enableHighAccuracy: true,
+            distanceFilter: 0,
+            interval: 1000,
+            fastestInterval: 500,
+          },
+        );
+    }
+
     return (
-        <LocationContext.Provider value={{state, dispatch, updatesEnabled , setUpdatesEnabled,StopLocationUpdates, clearLocationStart, getLocation, getLocationUpdates,removeLocationUpdates, saveLocation}}>
+        <LocationContext.Provider value={{state, dispatch, updatesEnabled , setUpdatesEnabled,StopLocationUpdates, clearLocationStart, getLocation, getLocationUpdates,removeLocationUpdates, saveLocation, CekRadius}}>
             {props.children}
         </LocationContext.Provider>
     );

@@ -5,6 +5,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 import LocationContextProvider from './src/contexts/LocationContext';
 import { setNavigator } from './src/navigationRef';
 import Cek from './src/screens/Cek';
+import CheckPoint from './src/screens/CheckPoint';
 import Contoh from './src/screens/Contoh';
 import Home from './src/screens/Home';
 import InputLokasi from './src/screens/InputLokasi';
@@ -23,6 +24,7 @@ const NavContent = createStackNavigator({
   Home : Home,
   Cek : Cek,
   InputLokasi : InputLokasi,
+  CheckPoint  : CheckPoint,
   Contoh : {
     screen : Contoh,
     navigationOptions:{

@@ -12,6 +12,7 @@
   "dependencies": {
     "@react-native-community/async-storage": "^1.12.0",
     "@react-native-community/netinfo": "^5.0.0",
+    "@react-native-community/picker": "^1.8.0",
     "@voximplant/react-native-foreground-service": "^2.0.0",
     "axios": "^0.19.2",
     "geolib": "^3.3.1",

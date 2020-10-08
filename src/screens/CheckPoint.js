@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import {Text, View } from 'react-native';
+import {ScrollView, Text, View } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import {Picker} from '@react-native-community/picker';
 import { Button } from 'react-native-paper';
@@ -24,21 +24,27 @@ const CheckPoint = () => {
         return ()=>StopLocationUpdates();
     },[selectedLokasi])
 
-    return (
+    return (<ScrollView showsVerticalScrollIndicator={false}>
         <View style={{margin:20}}>
+            
             <View style={{backgroundColor:"#999999", padding:5 , borderRadius:10}}>
-            <Picker
+            {
+                dataLokasi === null ? 
+                <Text style={{color:'red' , fontSize:20, textAlign:'center'}}>Data Kosong</Text>
+                :
+                <Picker
                 selectedValue={selectedLokasi}
                 mode="dropdown"
                 onValueChange={(itemValue, itemIndex) => {
                     // console.log(itemValue, itemIndex)
                     setSelectedLokasi(itemValue)
-                }}
-            >
+                }}>
                 {dataLokasi.map((item,key) =>{
                     return <Picker.Item label={item.location} value={item} key={key} />
                 })}
             </Picker>
+            }
+           
             </View>
 
             {/* <Text>{JSON.stringify(selectedLokasi, null, 4)}</Text> */}
@@ -61,8 +67,8 @@ const CheckPoint = () => {
                 </View>
                 <Button color="green" icon="check" mode="contained" onPress={() => console.log('CheckPoint')} disabled={!state.radius ? true : false} contentStyle={{padding:20}} style={{marginTop:20, borderRadius:10}}>Check Point</Button>
             </View>
-           
         </View>
+        </ScrollView>
     );
 }
 

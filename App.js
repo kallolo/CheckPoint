@@ -9,6 +9,7 @@ import CheckPoint from './src/screens/CheckPoint';
 import Contoh from './src/screens/Contoh';
 import Home from './src/screens/Home';
 import InputLokasi from './src/screens/InputLokasi';
+import TampilPeta from './src/screens/TampilPeta';
 
 const theme = {
   ...DefaultTheme,
@@ -25,6 +26,7 @@ const NavContent = createStackNavigator({
   Cek : Cek,
   InputLokasi : InputLokasi,
   CheckPoint  : CheckPoint,
+  TampilPeta  : TampilPeta,
   Contoh : {
     screen : Contoh,
     navigationOptions:{

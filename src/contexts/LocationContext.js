@@ -208,8 +208,8 @@ const LocationContextProvider = (props) => {
           {
             enableHighAccuracy: true,
             distanceFilter: 0,
-            interval: 1000,
-            fastestInterval: 500,
+            interval: 500,
+            fastestInterval: 200,
           },
         );
     }

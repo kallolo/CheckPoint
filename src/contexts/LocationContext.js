@@ -108,14 +108,12 @@ const LocationContextProvider = (props) => {
               // See error code charts below.
               console.log(error.code, error.message);
             },
-            { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+            { enableHighAccuracy: true }
         );
     }
 
     const getLocationUpdates = async () => {
         const cekLocationPermission = await hasLocationPermission();
-        let lokasiTujuan;
-        let jarak;
     
         if (!cekLocationPermission) {
           return;
@@ -123,16 +121,6 @@ const LocationContextProvider = (props) => {
           watchId = Geolocation.watchPosition(
             (position) => {
                 dispatch({type:'setLocationCurrent', data :position})
-                // jarak
-                jarak = getDistance(position.coords, state.locationStart.coords);
-                console.log('Jarak '+jarak+' Meter')
-                dispatch({type:'setJarak', data :jarak})
-
-                //radius
-                radius = isPointWithinRadius(position.coords, state.locationStart.coords, 5);
-                console.log(radius)
-                dispatch({type:'setRadius', data :radius})
-
                 console.log(position);
             },
             (error) => {
@@ -179,6 +167,22 @@ const LocationContextProvider = (props) => {
       navigate('Home')
     }
 
+    const removeLocation = async(lokasi) =>{
+      console.log(lokasi)
+      try{
+        let dataLokasi =[];
+        let Lokasi = await AsyncStorage.getItem('Lokasi');
+        let LokasiArray = JSON.parse(Lokasi);
+        dataLokasi = LokasiArray.filter(function(e){
+          return e.location !== lokasi
+        })
+        await AsyncStorage.setItem('Lokasi', JSON.stringify(dataLokasi));
+        navigate('Home')
+      }catch(error){
+        console.log(error);
+      }
+    }
+
     const CekRadius = async(lokasiTujuan) =>{
       const cekLocationPermission = await hasLocationPermission();
     
@@ -215,7 +219,7 @@ const LocationContextProvider = (props) => {
     }
 
     return (
-        <LocationContext.Provider value={{state, dispatch, updatesEnabled , setUpdatesEnabled,StopLocationUpdates, clearLocationStart, getLocation, getLocationUpdates,removeLocationUpdates, saveLocation, CekRadius}}>
+        <LocationContext.Provider value={{state, dispatch, updatesEnabled , setUpdatesEnabled,StopLocationUpdates, clearLocationStart, getLocation, getLocationUpdates,removeLocationUpdates, saveLocation, removeLocation, CekRadius}}>
             {props.children}
         </LocationContext.Provider>
     );

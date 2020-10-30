@@ -15,7 +15,8 @@ const AuthContextProvider = (props) => {
         SecurePassword  : true,
         pesan           : '',
         token           : null,
-        username        : ''
+        username        : '',
+        detailUser      : '',
     }
     const [stateAuth, dispatch] = useReducer(authReducer,initialState)
 
@@ -29,7 +30,7 @@ const AuthContextProvider = (props) => {
         // console.log(userLogin.token)
         if(userLogin){
             // console.log(user)
-            dispatch({type:'loginBerhasil', data : { pesan:'sudah login', status:true, token: userLogin.token, username: userLogin.username}});
+            dispatch({type:'loginBerhasil', data : { pesan:'sudah login', status:true, token: userLogin.token, username: userLogin.username,  detailUser: userLogin.detailUser}});
             navigate('Content')
         }else{
             dispatch({type:'loginGagal', data : { pesan:'belum login, token tidak tersedia', status:false}})
@@ -46,10 +47,11 @@ const AuthContextProvider = (props) => {
             if(pesanLogin === "sukses"){
                 var user = {
                     username    : response.data.username,
-                    token       : response.data.token
+                    token       : response.data.token,
+                    detailUser  : response.data.detailUser
                 }
                 await AsyncStorage.setItem('user', JSON.stringify(user))
-                dispatch({type:'loginBerhasil', data : {pesan: response.data.text_msg, status : true, token : response.data.token, username :  response.data.username}})
+                dispatch({type:'loginBerhasil', data : {pesan: response.data.text_msg, status : true, token : response.data.token, username :  response.data.username, detailUser : response.data.detailUser }})
                 navigate('Content');
             }else{
                 setTimeout(() => {Alert.alert('Perhatian !!!',response.data.text_msg)}, 500);

@@ -19,7 +19,7 @@ const ListCheckpoint = () => {
         return (
             <TouchableOpacity onPress={() => navigate('DetailListCheckpoint', { item: data.item })} style={{ justifyContent: 'center' }}>
                 <View style={{ padding: 20, marginHorizontal: 10, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: '#aaa' }}>
-                    <Text style={{ fontSize: 24, fontWeight: 'bold' }}>{data.item.detailUser.userName}</Text>
+                    <Text style={{ fontSize: 24, fontWeight: 'bold' }}>{data.item.detailUser.userName} ({data.item.detailUser.personalNIK})</Text>
                     <Text style={{ fontSize: 14, color: 'gray' }}>{Moment(data.item.tanggalCheckpoint).format('D MMMM YYYY')}</Text>
                 </View>
             </TouchableOpacity>

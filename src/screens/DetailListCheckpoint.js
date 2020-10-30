@@ -8,7 +8,7 @@ import Moment from 'moment';
 const DetailListCheckpoint = ({ navigation }) => {
     const { state, getDetailCheckpoint } = useContext(CheckpointContext);
     const item = navigation.state.params.item;
-    const detailCheckpoint = state.detailCheckpoint;
+    const detailCheckpoint = state.detailCheckpoint === null ? [] : state.detailCheckpoint;
     const [images, setImages] = useState([]);
     const [visible, setIsVisible] = useState(false);
 

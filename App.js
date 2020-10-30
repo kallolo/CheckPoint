@@ -15,6 +15,7 @@ import Home from './src/screens/Home';
 import InputLokasi from './src/screens/InputLokasi';
 import ListCheckpoint from './src/screens/ListCheckpoint';
 import Login from './src/screens/Login';
+import RiwayatCheckpoint from './src/screens/RiwayatCheckpoint';
 import TampilPeta from './src/screens/TampilPeta';
 
 const theme = {
@@ -34,6 +35,7 @@ const NavContent = createStackNavigator({
   CheckPoint: CheckPoint,
   ListCheckpoint: ListCheckpoint,
   DetailListCheckpoint: DetailListCheckpoint,
+  RiwayatCheckpoint : RiwayatCheckpoint,
   TampilPeta: TampilPeta,
   Contoh: {
     screen: Contoh,

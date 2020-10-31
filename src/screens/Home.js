@@ -6,13 +6,13 @@ import { navigate } from '../navigationRef';
 import { AuthContext } from '../contexts/AuthContext';
 
 const Home = () => {
-  const {stateAuth, LogOut } = useContext(AuthContext);
+  const { stateAuth, LogOut } = useContext(AuthContext);
   const [isAdmin, setIsAdmin] = useState(false)
   let Privileges = stateAuth.detailUser.userPrivilegesGroupId;
 
-  useEffect(()=>{
+  useEffect(() => {
     var admin = Privileges.match(/PG-superUser/g)
-    if(admin !== null){
+    if (admin !== null) {
       setIsAdmin(true);
     }
   })
@@ -21,17 +21,18 @@ const Home = () => {
     <View style={{ margin: 30 }}>
       <StatusBar backgroundColor="#007acc" />
       {
-      isAdmin ?
-      (<>
-      <Button style={{ margin: 10 }} contentStyle={{ margin: 10 }} color="#007acc" icon="pencil" mode="contained" onPress={() => navigate('InputLokasi')}>Input Lokasi</Button>
-         <Button style={{ margin: 10 }} contentStyle={{ margin: 10 }} color="#007acc" icon="format-list-checkbox" mode="contained" onPress={() => navigate('ListCheckpoint')}>List Checkpoint</Button>
-      </>)
-      :(<>
-      <Button style={{ margin: 10 }} contentStyle={{ margin: 10 }} color="#007acc" icon="check" mode="contained" onPress={() => navigate('CheckPoint')}>Check Point</Button>
-      <Button style={{ margin: 10 }} contentStyle={{ margin: 10 }} color="#007acc" icon="format-list-checkbox" mode="contained" onPress={() => navigate('RiwayatCheckpoint')}>Riwayat Checkpoint</Button>
-      </>)
+        isAdmin ?
+          (<>
+            <Button style={{ margin: 10 }} contentStyle={{ margin: 10 }} color="#007acc" icon="pencil" mode="contained" onPress={() => navigate('InputLokasi')}>Input Lokasi</Button>
+            <Button style={{ margin: 10 }} contentStyle={{ margin: 10 }} color="#007acc" icon="map-marker-radius" mode="contained" onPress={() => navigate('MasterLokasi')}>Master Lokasi</Button>
+            <Button style={{ margin: 10 }} contentStyle={{ margin: 10 }} color="#007acc" icon="format-list-checkbox" mode="contained" onPress={() => navigate('ListCheckpoint')}>List Checkpoint</Button>
+          </>)
+          : (<>
+            <Button style={{ margin: 10 }} contentStyle={{ margin: 10 }} color="#007acc" icon="check" mode="contained" onPress={() => navigate('CheckPoint')}>Check Point</Button>
+            <Button style={{ margin: 10 }} contentStyle={{ margin: 10 }} color="#007acc" icon="format-list-checkbox" mode="contained" onPress={() => navigate('RiwayatCheckpoint')}>Riwayat Checkpoint</Button>
+          </>)
       }
-      
+
       <Button style={{ margin: 10 }} contentStyle={{ margin: 10 }} color="red" icon="logout" mode="contained" onPress={() => {
         Alert.alert('Info', 'Apakah anda yakin keluar ?',
           [

@@ -5,6 +5,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 import AuthContextProvider from './src/contexts/AuthContext';
 import CheckpointContextProvider from './src/contexts/CheckpointContext';
 import LocationContextProvider from './src/contexts/LocationContext';
+import MasterLokasiContextProvider from './src/contexts/MasterLokasiContext';
 import { setNavigator } from './src/navigationRef';
 import Cek from './src/screens/Cek';
 import CekLogin from './src/screens/CekLogin';
@@ -15,8 +16,11 @@ import Home from './src/screens/Home';
 import InputLokasi from './src/screens/InputLokasi';
 import ListCheckpoint from './src/screens/ListCheckpoint';
 import Login from './src/screens/Login';
+import MasterLokasi from './src/screens/MasterLokasi';
 import RiwayatCheckpoint from './src/screens/RiwayatCheckpoint';
+import TambahLokasi from './src/screens/TambahLokasi';
 import TampilPeta from './src/screens/TampilPeta';
+import UbahLokasi from './src/screens/UbahLokasi';
 
 const theme = {
   ...DefaultTheme,
@@ -32,10 +36,13 @@ const NavContent = createStackNavigator({
   Home: Home,
   Cek: Cek,
   InputLokasi: InputLokasi,
+  MasterLokasi: MasterLokasi,
+  TambahLokasi: TambahLokasi,
+  UbahLokasi: UbahLokasi,
   CheckPoint: CheckPoint,
   ListCheckpoint: ListCheckpoint,
   DetailListCheckpoint: DetailListCheckpoint,
-  RiwayatCheckpoint : RiwayatCheckpoint,
+  RiwayatCheckpoint: RiwayatCheckpoint,
   TampilPeta: TampilPeta,
   Contoh: {
     screen: Contoh,
@@ -59,7 +66,9 @@ export default () => {
       <AuthContextProvider>
         <LocationContextProvider>
           <CheckpointContextProvider>
-            <AppContainer ref={(navigator) => setNavigator(navigator)} />
+            <MasterLokasiContextProvider>
+              <AppContainer ref={(navigator) => setNavigator(navigator)} />
+            </MasterLokasiContextProvider>
           </CheckpointContextProvider>
         </LocationContextProvider>
       </AuthContextProvider>

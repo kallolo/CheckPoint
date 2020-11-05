@@ -81,7 +81,7 @@ const RiwayatCheckpoint = () => {
                     <View style={{ flex: 1, alignItems: 'center', marginHorizontal: 5, flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 20 }}>
                         <RadioButton.Group onValueChange={value => setShift(value)} value={shift}>
                             <View style={{ alignItems: 'center' }}>
-                                <Text style={{ fontWeight: 'bold' }}>Shit 1</Text>
+                                <Text style={{ fontWeight: 'bold' }}>Shift 1</Text>
                                 <RadioButton value="1" color="#007acc" />
                             </View>
                             <View style={{ alignItems: 'center' }}>

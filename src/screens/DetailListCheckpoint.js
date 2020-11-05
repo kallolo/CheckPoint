@@ -20,7 +20,7 @@ const DetailListCheckpoint = ({ navigation }) => {
         return {
             time: Moment(data.waktuCheckpoint).format('H:mm'),
             title: data.detailLokasi.namaLokasi,
-            description: 'Telah Melakukan Checkpoint dan Mengecek Semuanya, Telah Melakukan Checkpoint dan Mengecek Semuanya',
+            description: data.keteranganCheckpoint,
             image: data.fotoCheckpoint
         };
     });
@@ -39,7 +39,7 @@ const DetailListCheckpoint = ({ navigation }) => {
             }>
                 <View style={{ flex: 1, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: '#aaa' }}>
                     <Text style={{ fontSize: 16, fontWeight: 'bold' }}>{rowData.title} </Text>
-                    <Text style={{ fontSize: 14 }}>{rowData.description} </Text>
+                    <Text style={{ fontSize: 14, marginBottom:10 }}>{rowData.description} </Text>
                 </View>
             </TouchableOpacity>
         )

@@ -2,6 +2,8 @@ import React, { createContext, useReducer } from 'react';
 import APICheckpoint from '../api/APICheckpoint';
 import AsyncStorage from '@react-native-community/async-storage';
 import { checkpointReducer } from '../reducers/checkpointReducer';
+import { Platform } from 'react-native';
+import { navigate } from '../navigationRef';
 
 export const CheckpointContext = createContext();
 
@@ -13,6 +15,47 @@ const CheckpointContextProvider = (props) => {
     }
 
     const [state, dispatch] = useReducer(checkpointReducer, initialState);
+
+    const createFormData = (photo, body) => {
+        const data = new FormData();
+        // console.log(photo)
+        data.append("fotoCheckpoint", {
+            name : photo.fileName,
+            type : photo.type,
+            uri: Platform.OS ==="android" ? photo.uri : photo.uri.replace("file://", "")
+        });
+
+        Object.keys(body).forEach(key => {
+            data.append(key, body[key]);
+        });
+
+        return data;
+    }
+
+    const kirimCheckpoint = async(photo , idLokasi, keteranganCheckpoint, shiftCheckpoint) =>{
+        // console.log(photo.response, idLokasi)
+        const userLokal = await AsyncStorage.getItem('user');
+        const userLogin = JSON.parse(userLokal);
+        const header = {
+            'Accept': 'application/json',
+            'Content-Type': 'multipart/form-data',
+            'Authorization': userLogin.token,
+            'username': userLogin.username,
+        }
+
+        const inputCheckpoint = await createFormData(photo.response, {idLokasi, keteranganCheckpoint, shiftCheckpoint})
+        // console.log(JSON.parse(inputCheckpoint))
+        try {
+            const response = await APICheckpoint.post('/checkpoint', inputCheckpoint , { headers: header });
+            navigate('Home')
+            // console.log(response);
+        } catch (err) {
+            console.log(err)
+            console.log("upload error", error);
+            alert("Upload failed!");
+        }
+
+    }
 
     const getCheckpoint = async (tanggal, shift) => {
         // console.log(tanggal, shift)
@@ -46,7 +89,7 @@ const CheckpointContextProvider = (props) => {
     }
 
     return (
-        <CheckpointContext.Provider value={{ state, dispatch, getCheckpoint, getDetailCheckpoint }}>
+        <CheckpointContext.Provider value={{ state, dispatch, kirimCheckpoint, getCheckpoint, getDetailCheckpoint }}>
             {props.children}
         </CheckpointContext.Provider>
     )

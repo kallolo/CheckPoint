@@ -1,14 +1,27 @@
 import React, { useContext, useState } from 'react';
 import { View } from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
+import { LocationContext } from '../contexts/LocationContext';
 import { MasterLokasiContext } from '../contexts/MasterLokasiContext';
 
 const UbahLokasi = ({ navigation }) => {
     const item = navigation.state.params.item;
     const { updateMasterLokasi } = useContext(MasterLokasiContext)
+    const {state ,getLocation } = useContext(LocationContext);
     const [namaLokasi, setNamaLokasi] = useState(item.namaLokasi);
-    const [longitudeLokasi, setLongitudeLokasi] = useState(item.longitudeLokasi);
-    const [latitudeLokasi, setLatitudeLokasi] = useState(item.latitudeLokasi);
+
+    let longitude;
+    let latitude;
+    let labelButton;
+    if(state.locationStart ==""){
+        longitude   =item.longitudeLokasi;
+        latitude    =item.latitudeLokasi;
+        labelButton ="Ganti Koordinat";
+    }else{
+        longitude   = state.locationStart.coords.longitude.toString();
+        latitude    = state.locationStart.coords.latitude.toString();
+        labelButton ="Ganti Koordinat";
+    }
 
     return (
         <View style={{ margin: 15 }}>
@@ -20,22 +33,23 @@ const UbahLokasi = ({ navigation }) => {
                 onChangeText={value => setNamaLokasi(value)}
             />
             <View style={{ flexDirection: "row", marginBottom: 10 }}>
-                <TextInput
+            <TextInput
                     mode="outlined"
                     style={{ flex: 1 }}
                     label="Longitude"
-                    value={longitudeLokasi}
-                    onChangeText={value => setLongitudeLokasi(value)}
+                    value={longitude}
+                    disabled={true}
                 />
                 <TextInput
                     mode="outlined"
                     style={{ flex: 1 }}
                     label="Latitude"
-                    value={latitudeLokasi}
-                    onChangeText={value => setLatitudeLokasi(value)}
+                    value={latitude}
+                    disabled={true}
                 />
             </View>
-            <Button style={{ marginVertical: 10, borderRadius: 10 }} contentStyle={{ paddingVertical: 10 }} color="green" icon="check" mode="contained" onPress={() => updateMasterLokasi(item.idLokasi, namaLokasi, longitudeLokasi, latitudeLokasi)}>Simpan</Button>
+            <Button style={{marginBottom:20}} color="orange" icon="pin" mode="contained" onPress={() => getLocation()}>{labelButton}</Button>
+            <Button style={{ marginVertical: 10, borderRadius: 10 }} contentStyle={{ paddingVertical: 10 }} color="green" icon="check" mode="contained" onPress={() => updateMasterLokasi(item.idLokasi, namaLokasi, longitude, latitude)}>Simpan</Button>
         </View>
     );
 }

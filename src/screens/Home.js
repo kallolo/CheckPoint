@@ -25,10 +25,11 @@ const Home = () => {
           (<>
             <Button style={{ margin: 10 }} contentStyle={{ margin: 10 }} color="#007acc" icon="pencil" mode="contained" onPress={() => navigate('InputLokasi')}>Input Lokasi</Button>
             <Button style={{ margin: 10 }} contentStyle={{ margin: 10 }} color="#007acc" icon="map-marker-radius" mode="contained" onPress={() => navigate('MasterLokasi')}>Master Lokasi</Button>
+            <Button style={{ margin: 10 }} contentStyle={{ margin: 10 }} color="#007acc" icon="check" mode="contained" onPress={() => navigate('CheckPoint')}>Checkpoint</Button>
             <Button style={{ margin: 10 }} contentStyle={{ margin: 10 }} color="#007acc" icon="format-list-checkbox" mode="contained" onPress={() => navigate('ListCheckpoint')}>List Checkpoint</Button>
           </>)
           : (<>
-            <Button style={{ margin: 10 }} contentStyle={{ margin: 10 }} color="#007acc" icon="check" mode="contained" onPress={() => navigate('CheckPoint')}>Check Point</Button>
+            <Button style={{ margin: 10 }} contentStyle={{ margin: 10 }} color="#007acc" icon="check" mode="contained" onPress={() => navigate('CheckPoint')}>Checkpoint</Button>
             <Button style={{ margin: 10 }} contentStyle={{ margin: 10 }} color="#007acc" icon="format-list-checkbox" mode="contained" onPress={() => navigate('RiwayatCheckpoint')}>Riwayat Checkpoint</Button>
           </>)
       }

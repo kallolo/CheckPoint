@@ -25,7 +25,7 @@ const MasterLokasiContextProvider = (props) => {
         }
     }
 
-    const addMasterLokasi = async (namaLokasi, longitudeLokasi, latitudeLokasi) => {
+    const addMasterLokasi = async (namaLokasi, longitude, latitude) => {
         dispatch({ type: 'refresh' })
         dispatch({ type: 'loading' })
         const userLokal = await AsyncStorage.getItem('user');
@@ -38,7 +38,7 @@ const MasterLokasiContextProvider = (props) => {
         }
 
         try {
-            const response = await APICheckpoint.post('/master-lokasi', { namaLokasi, longitudeLokasi, latitudeLokasi }, { headers: header });
+            const response = await APICheckpoint.post('/master-lokasi', { namaLokasi, longitudeLokasi:longitude, latitudeLokasi :latitude}, { headers: header });
             navigate('MasterLokasi')
             console.log(response.data.data);
         } catch (err) {
@@ -47,7 +47,7 @@ const MasterLokasiContextProvider = (props) => {
 
     }
 
-    const updateMasterLokasi = async (idLokasi, namaLokasi, longitudeLokasi, latitudeLokasi) => {
+    const updateMasterLokasi = async (idLokasi, namaLokasi, longitude, latitude) => {
         dispatch({ type: 'refresh' })
         dispatch({ type: 'loading' })
         const userLokal = await AsyncStorage.getItem('user');
@@ -60,7 +60,7 @@ const MasterLokasiContextProvider = (props) => {
         }
 
         try {
-            const response = await APICheckpoint.put('/master-lokasi', { idLokasi, namaLokasi, longitudeLokasi, latitudeLokasi }, { headers: header });
+            const response = await APICheckpoint.put('/master-lokasi', { idLokasi, namaLokasi, longitudeLokasi:longitude, latitudeLokasi :latitude }, { headers: header });
             navigate('MasterLokasi')
             console.log(response.data.data);
         } catch (err) {

@@ -10,9 +10,9 @@ import { CheckpointContext } from '../contexts/CheckpointContext';
 
 const RiwayatCheckpoint = () => {
     const {stateAuth} = useContext(AuthContext);
-    const { state, getDetailCheckpoint } = useContext(CheckpointContext);
+    const { stateC, getDetailCheckpoint } = useContext(CheckpointContext);
     const now = new Date();
-    const detailCheckpoint = state.detailCheckpoint === null ? [] : state.detailCheckpoint;
+    const detailCheckpoint = stateC.detailCheckpoint === null ? [] : stateC.detailCheckpoint;
     const [images, setImages] = useState([]);
     const [visible, setIsVisible] = useState(false);
     const [datePicker, setDatePicker] = useState(now)
@@ -28,14 +28,14 @@ const RiwayatCheckpoint = () => {
         return {
             time: Moment(data.waktuCheckpoint).format('H:mm'),
             title: data.detailLokasi.namaLokasi,
-            description: 'Telah Melakukan Checkpoint dan Mengecek Semuanya, Telah Melakukan Checkpoint dan Mengecek Semuanya',
+            description: data.keteranganCheckpoint,
             image: data.fotoCheckpoint
         };
     });
 
     const DataImageCheckpoint = (image) => {
         // console.log(image)
-        setImages([{ uri: "http://192.168.10.66:4321/file/photo/" + image }])
+        setImages([{ uri: "https://apiku.sambu.co.id/APICheckpoint/file/photo/" + image }])
     }
 
     const Detail = (rowData, sectionID, rowID) => {
@@ -99,8 +99,8 @@ const RiwayatCheckpoint = () => {
             </View>
 
         <ScrollView showsVerticalScrollIndicator={false}>
-            {state.isLoading ? <ActivityIndicator size='large' color='#1cacff' /> :
-             state.detailCheckpoint === null ?
+            {stateC.isLoading ? <ActivityIndicator size='large' color='#1cacff' /> :
+             stateC.detailCheckpoint === null ?
                  (<View style={{ alignContent: 'center', alignItems: 'center' }}>
                      <Image
                          style={{ marginTop: 20, height: 300, width: 300 }}

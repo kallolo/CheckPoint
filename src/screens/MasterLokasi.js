@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Text, View, ActivityIndicator, Image, ScrollView, FlatList, Animated, TouchableOpacity, RefreshControl } from 'react-native';
+import { Text, View, ActivityIndicator, Image, ScrollView, FlatList, Animated, TouchableOpacity, RefreshControl, Alert } from 'react-native';
 import { List, FAB } from 'react-native-paper';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -20,7 +20,13 @@ const MasterLokasi = () => {
                         outputRange: [0.7, 0]
                     })
                     return (<>
-                        <TouchableOpacity onPress={() => deleteMasterLokasi(data.item.idLokasi)}>
+                        <TouchableOpacity onPress={() => {
+                            Alert.alert('Info', `Apakah anda yakin menghapus lokasi ${data.item.namaLokasi} ?`,
+                                [
+                                    { text: 'Yakin', onPress: () => deleteMasterLokasi(data.item.idLokasi) },
+                                    { text: 'Tidak', onPress: () => console.log('Klik Kembali'), style: 'cancel' }
+                                ])
+                        }}>
                             <View style={{ flex: 1, backgroundColor: 'red', justifyContent: 'center' }}>
                                 <Animated.View style={{ paddingHorizontal: 5, transform: [{ scale }] }}>
                                     <Icon name='ios-trash-outline' size={45} color="white" />

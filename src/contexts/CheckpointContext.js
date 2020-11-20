@@ -14,7 +14,7 @@ const CheckpointContextProvider = (props) => {
         detailCheckpoint: [], // detail list checkpoint
     }
 
-    const [state, dispatch] = useReducer(checkpointReducer, initialState);
+    const [stateC, dispatch] = useReducer(checkpointReducer, initialState);
 
     const createFormData = (photo, body) => {
         const data = new FormData();
@@ -32,8 +32,9 @@ const CheckpointContextProvider = (props) => {
         return data;
     }
 
-    const kirimCheckpoint = async(photo , idLokasi, keteranganCheckpoint, shiftCheckpoint) =>{
+    const kirimCheckpoint = async(photo , idLokasi, keteranganCheckpoint) =>{
         // console.log(photo.response, idLokasi)
+        dispatch({ type: 'loading' })
         const userLokal = await AsyncStorage.getItem('user');
         const userLogin = JSON.parse(userLokal);
         const header = {
@@ -43,10 +44,11 @@ const CheckpointContextProvider = (props) => {
             'username': userLogin.username,
         }
 
-        const inputCheckpoint = await createFormData(photo.response, {idLokasi, keteranganCheckpoint, shiftCheckpoint})
+        const inputCheckpoint = await createFormData(photo.response, {idLokasi, keteranganCheckpoint})
         // console.log(JSON.parse(inputCheckpoint))
         try {
             const response = await APICheckpoint.post('/checkpoint', inputCheckpoint , { headers: header });
+            dispatch({ type: 'stop-loading' })
             navigate('Home')
             // console.log(response);
         } catch (err) {
@@ -89,7 +91,7 @@ const CheckpointContextProvider = (props) => {
     }
 
     return (
-        <CheckpointContext.Provider value={{ state, dispatch, kirimCheckpoint, getCheckpoint, getDetailCheckpoint }}>
+        <CheckpointContext.Provider value={{ stateC, dispatch, kirimCheckpoint, getCheckpoint, getDetailCheckpoint }}>
             {props.children}
         </CheckpointContext.Provider>
     )

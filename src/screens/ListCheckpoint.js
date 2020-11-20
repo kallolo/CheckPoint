@@ -8,7 +8,7 @@ import Moment from 'moment';
 
 const ListCheckpoint = () => {
     const now = new Date();
-    const { state, getCheckpoint } = useContext(CheckpointContext);
+    const { stateC, getCheckpoint } = useContext(CheckpointContext);
     const [datePicker, setDatePicker] = useState(now)
     const [tanggal, setTanggal] = useState(Moment(now).format('YYYY-MM-DD'));
     const [shift, setShift] = useState('1');
@@ -70,15 +70,15 @@ const ListCheckpoint = () => {
                 </View>
             </View>
 
-            {state.isLoading ? <ActivityIndicator size='large' color='#1cacff' /> :
-                state.listCheckpoint === null ?
+            {stateC.isLoading ? <ActivityIndicator size='large' color='#1cacff' /> :
+                stateC.listCheckpoint === null ?
                     (<View style={{ alignContent: 'center', alignItems: 'center' }}>
                         <Image
                             style={{ marginTop: 20, height: 300, width: 300 }}
                             source={require('../assets/img/no-data.png')}
                         /><Text style={{ color: '#007acc', fontSize: 25 }}>Data Kosong</Text></View>)
                     : (<FlatList
-                        data={state.listCheckpoint}
+                        data={stateC.listCheckpoint}
                         renderItem={(data) => listDataCheckpoint(data)}
                         keyExtractor={(data, index) => index.toString()}
                     />)}

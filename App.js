@@ -1,5 +1,5 @@
 import React from 'react';
-import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
+import { DefaultTheme, configureFonts, Provider as PaperProvider } from 'react-native-paper';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import AuthContextProvider from './src/contexts/AuthContext';
@@ -22,8 +22,30 @@ import TambahLokasi from './src/screens/TambahLokasi';
 import TampilPeta from './src/screens/TampilPeta';
 import UbahLokasi from './src/screens/UbahLokasi';
 
+const fontConfig = {
+  default: {
+    regular: {
+      fontFamily: 'sans-serif',
+      fontWeight: 'normal',
+    },
+    medium: {
+      fontFamily: 'sans-serif-medium',
+      fontWeight: 'normal',
+    },
+    light: {
+      fontFamily: 'sans-serif-light',
+      fontWeight: 'normal',
+    },
+    thin: {
+      fontFamily: 'sans-serif-thin',
+      fontWeight: 'normal',
+    },
+  },
+};
+
 const theme = {
   ...DefaultTheme,
+  fonts : configureFonts(fontConfig),
   roundness: 2,
   colors: {
     ...DefaultTheme.colors,

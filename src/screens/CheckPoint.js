@@ -10,14 +10,12 @@ import { CheckpointContext } from '../contexts/CheckpointContext';
 const CheckPoint = () => {
     const {state, CekRadius, StopLocationUpdates} = useContext(LocationContext);
     const {stateML, getMasterLokasi} = useContext(MasterLokasiContext);
-    const {kirimCheckpoint} = useContext(CheckpointContext);
-    const [dataLokasi, setDataLokasi] = useState([]);
+    const {stateC,kirimCheckpoint} = useContext(CheckpointContext);
     const [selectedLokasi, setSelectedLokasi] = useState('')
     const [lokasiCheckpoint, setLokasiCheckpoint] = useState('');
     const [idLokasi, setIdLokasi] = useState('');
     const [photo, setPhoto ] = useState('');
     const [keteranganCheckpoint, setKeteranganCheckpoint] = useState('')
-    const [shiftCheckpoint, setShiftCheckpoint] = useState('1');
 
 
     useEffect(()=>{
@@ -72,42 +70,14 @@ const CheckPoint = () => {
                     <View style={{flex:1}}><Text style={{fontWeight:"bold"}}>Jarak</Text></View>
                     <View style={{flex:2}}><Text>: {state.jarak !== "" ? state.jarak+" Meter" : "-"}</Text></View>
                 </View>
-                <View style={{flexDirection:'row', marginBottom:10}}>
+                {/* <View style={{flexDirection:'row', marginBottom:10}}>
                     <View style={{flex:1}}><Text style={{fontWeight:"bold"}}>Radius (3 Meter)</Text></View>
                     <View style={{flex:2}}><Text>: {!state.radius ? "Belum ": "Sudah"}</Text></View>
-                </View>
+                </View> */}
                 
             </View>
-            <View style={{ flex: 1, alignItems: 'center', marginVertical: 10, flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 20 }}>
-                        <RadioButton.Group onValueChange={value => setShiftCheckpoint(value)} value={shiftCheckpoint}>
-                            <View style={{ alignItems: 'center' }}>
-                                <Text style={{ fontWeight: 'bold' }}>Shift 1</Text>
-                                <RadioButton value="1" color="#007acc" />
-                            </View>
-                            <View style={{ alignItems: 'center' }}>
-                                <Text style={{ fontWeight: 'bold' }}>Shift 2</Text>
-                                <RadioButton value="2" color="#007acc" />
-                            </View>
-                            <View style={{ alignItems: 'center' }}>
-                                <Text style={{ fontWeight: 'bold' }}>Shift 3</Text>
-                                <RadioButton value="3" color="#007acc" />
-                            </View>
-                        </RadioButton.Group>
-                        {/* <TextInput style={{ fontSize: 20, color: '#c5e9fd', padding: 10 }} placeholder="Cari Relasi" value={1} onChangeText={(Shift) => console.log({ Shift })} /> */}
-            </View>
-
-            <View style={{flexDirection:'row', marginBottom:10}}>
-                <TextInput
-                    mode="outlined"
-                    multiline={true}
-                    style={{ flex: 1 }}
-                    label="Keterangan"
-                    value={keteranganCheckpoint}
-                    onChangeText={value => setKeteranganCheckpoint(value)}
-                />
-                </View>
             <View style={{ alignItems:'center'}}>
-                {photo == "" ? <Text>Foto Belum Ada</Text>:(
+                {photo == "" ? null:(
             <Image
                 style={{width: 350, height: 350,}}
                 source={{uri: photo.response.uri}}
@@ -115,7 +85,7 @@ const CheckPoint = () => {
             )}
             </View>
             
-            <Button disabled={!state.radius ? true : false} color="green" icon="camera" mode="contained" onPress={() => ImagePicker.launchCamera(
+            <Button disabled={stateC.isLoading || !state.radius ? true : false} color="green" icon="camera" mode="contained" onPress={() => ImagePicker.launchCamera(
               {
                 mediaType: 'photo',
                 includeBase64: false,
@@ -132,11 +102,22 @@ const CheckPoint = () => {
                  
                 // console.log({response});
               },
-            )} contentStyle={{padding:20}} style={{marginTop:20, borderRadius:10}}>{photo == "" ? "Ambil Foto" : "Ganti Foto"}</Button>
-            {/* <Text>{JSON.stringify(respon.response.uri)}</Text>  */}
+            )} contentStyle={{padding:10}} style={{marginVertical:5, borderRadius:10}}>{photo == "" ? "Ambil Foto" : "Ganti Foto"}</Button>
+        
+            <View style={{flexDirection:'row', marginVertical:5}}>
+                <TextInput
+                    mode="outlined"
+                    multiline={true}
+                    style={{ flex: 1 }}
+                    label="Keterangan"
+                    value={keteranganCheckpoint}
+                    onChangeText={value => setKeteranganCheckpoint(value)}
+                />
+                </View>
+           
           
-            <Button color="green" icon="check" mode="contained" onPress={() => kirimCheckpoint(photo, idLokasi, keteranganCheckpoint, shiftCheckpoint)} disabled={photo==="" ? true : false} 
-             contentStyle={{padding:20}} style={{marginTop:20, borderRadius:10}}>Check Point</Button>
+            <Button loading={stateC.isLoading} color="green" icon="check" mode="contained" onPress={() => kirimCheckpoint(photo, idLokasi, keteranganCheckpoint )} disabled={stateC.isLoading || photo==="" ? true : false} 
+             contentStyle={{padding:20}} style={{marginVertical:5, borderRadius:10}}>{stateC.isLoading ? "Mengirim .." : "Check Point"}</Button>
         </View>
         </ScrollView>
     );

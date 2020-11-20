@@ -63,6 +63,7 @@ const styles = StyleSheet.create({
     fontSize : 20,
     backgroundColor: '#fff',
     color: '#424242',
+    fontFamily :'serif'
 },
   button: {
     width:300,
@@ -75,7 +76,7 @@ const styles = StyleSheet.create({
     fontSize:16,
     fontWeight:'500',
     color:'#ffffff',
-    textAlign:'center'
+    textAlign:'center',
     },
   
 });

@@ -6,9 +6,9 @@ import ImageView from "react-native-image-viewing";
 import Moment from 'moment';
 
 const DetailListCheckpoint = ({ navigation }) => {
-    const { state, getDetailCheckpoint } = useContext(CheckpointContext);
+    const { stateC, getDetailCheckpoint } = useContext(CheckpointContext);
     const item = navigation.state.params.item;
-    const detailCheckpoint = state.detailCheckpoint === null ? [] : state.detailCheckpoint;
+    const detailCheckpoint = stateC.detailCheckpoint === null ? [] : stateC.detailCheckpoint;
     const [images, setImages] = useState([]);
     const [visible, setIsVisible] = useState(false);
 
@@ -27,7 +27,7 @@ const DetailListCheckpoint = ({ navigation }) => {
 
     const DataImageCheckpoint = (image) => {
         // console.log(image)
-        setImages([{ uri: "http://192.168.10.66:4321/file/photo/" + image }])
+        setImages([{ uri: "https://apiku.sambu.co.id/APICheckpoint/file/photo/" + image }])
     }
 
     const Detail = (rowData, sectionID, rowID) => {
@@ -55,7 +55,7 @@ const DetailListCheckpoint = ({ navigation }) => {
         />
         {/* tampil gambar */}
         <ScrollView showsVerticalScrollIndicator={false}>
-            {state.isLoading ? <ActivityIndicator size='large' color='#1cacff' /> :
+            {stateC.isLoading ? <ActivityIndicator size='large' color='#1cacff' /> :
                 <Timeline
                     data={DataCheckpoint}
                     circleSize={20}

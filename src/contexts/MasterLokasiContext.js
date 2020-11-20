@@ -36,14 +36,20 @@ const MasterLokasiContextProvider = (props) => {
             'Authorization': userLogin.token,
             'username': userLogin.username,
         }
-
-        try {
-            const response = await APICheckpoint.post('/master-lokasi', { namaLokasi, longitudeLokasi:longitude, latitudeLokasi :latitude}, { headers: header });
-            navigate('MasterLokasi')
-            console.log(response.data.data);
-        } catch (err) {
-            console.log(err)
+        if (namaLokasi === undefined) {
+            alert("Nama Lokasi Harus Diisi")
+        } else if (longitude === "" && latitude === "") {
+            alert("Koordinat Belum Ditentukan")
+        } else {
+            try {
+                const response = await APICheckpoint.post('/master-lokasi', { namaLokasi, longitudeLokasi: longitude, latitudeLokasi: latitude }, { headers: header });
+                navigate('MasterLokasi')
+                console.log(response.data.data);
+            } catch (err) {
+                console.log(err)
+            }
         }
+
 
     }
 
@@ -58,15 +64,19 @@ const MasterLokasiContextProvider = (props) => {
             'Authorization': userLogin.token,
             'username': userLogin.username,
         }
-
-        try {
-            const response = await APICheckpoint.put('/master-lokasi', { idLokasi, namaLokasi, longitudeLokasi:longitude, latitudeLokasi :latitude }, { headers: header });
-            navigate('MasterLokasi')
-            console.log(response.data.data);
-        } catch (err) {
-            console.log(err)
+        if (namaLokasi === "") {
+            alert("Nama Lokasi Harus Diisi")
+        } else if (longitude === "" && latitude === "") {
+            alert("Koordinat Belum Ditentukan")
+        } else {
+            try {
+                const response = await APICheckpoint.put('/master-lokasi', { idLokasi, namaLokasi, longitudeLokasi: longitude, latitudeLokasi: latitude }, { headers: header });
+                navigate('MasterLokasi')
+                console.log(response.data.data);
+            } catch (err) {
+                console.log(err)
+            }
         }
-
     }
 
     const deleteMasterLokasi = async (idLokasi) => {

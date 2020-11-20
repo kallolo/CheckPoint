@@ -5,7 +5,7 @@ import { LocationContext } from '../contexts/LocationContext';
 import { MasterLokasiContext } from '../contexts/MasterLokasiContext';
 
 const TambahLokasi = () => {
-    const { addMasterLokasi } = useContext(MasterLokasiContext)
+    const { stateML, addMasterLokasi } = useContext(MasterLokasiContext)
     const {state ,getLocation } = useContext(LocationContext);
     const [namaLokasi, setNamaLokasi] = useState();
 
@@ -49,7 +49,7 @@ const TambahLokasi = () => {
                 />
             </View>
             <Button style={{marginBottom:20}} color="orange" icon="pin" mode="contained" onPress={() => getLocation()}>{labelButton}</Button>
-            <Button style={{ marginVertical: 10, borderRadius: 10 }} contentStyle={{ paddingVertical: 10 }} color="green" icon="check" mode="contained" onPress={() => addMasterLokasi(namaLokasi, longitude, latitude)}>Simpan</Button>
+            <Button loading={stateML.isLoading} disabled={stateML.isLoading} style={{ marginVertical: 10, borderRadius: 10 }} contentStyle={{ paddingVertical: 10 }} color="green" icon="check" mode="contained" onPress={() => addMasterLokasi(namaLokasi, longitude, latitude)}>{stateML.isLoading ? "Menyimpan.." : "Simpan"}</Button>
         </View>
     );
 }

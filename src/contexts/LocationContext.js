@@ -200,7 +200,7 @@ const LocationContextProvider = (props) => {
               dispatch({type:'setJarak', data :jarak})
 
               //radius
-              radius = isPointWithinRadius(position.coords, lokasiTujuan, 5);
+              radius = isPointWithinRadius(position.coords, lokasiTujuan, 10);
               console.log(radius)
               dispatch({type:'setRadius', data :radius})
 

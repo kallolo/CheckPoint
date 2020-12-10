@@ -16,15 +16,17 @@ const CheckpointContextProvider = (props) => {
 
     const [stateC, dispatch] = useReducer(checkpointReducer, initialState);
 
-    const createFormData = (photo, body) => {
+    const createFormData = (photos, body) => {
         const data = new FormData();
-        // console.log(photo)
-        data.append("fotoCheckpoint", {
-            name : photo.fileName,
-            type : photo.type,
-            uri: Platform.OS ==="android" ? photo.uri : photo.uri.replace("file://", "")
-        });
-
+        // console.log(photos)
+        photos.forEach((item,i) =>{
+            data.append("fotoCheckpoint", {
+                name : item.response.fileName,
+                type : item.response.type,
+                uri: Platform.OS ==="android" ? item.response.uri : item.response.uri.replace("file://", "")
+            });
+        })
+       
         Object.keys(body).forEach(key => {
             data.append(key, body[key]);
         });
@@ -32,8 +34,8 @@ const CheckpointContextProvider = (props) => {
         return data;
     }
 
-    const kirimCheckpoint = async(photo , idLokasi, keteranganCheckpoint) =>{
-        // console.log(photo.response, idLokasi)
+    const kirimCheckpoint = async(photos , idLokasi, keteranganCheckpoint) =>{
+        // console.log(photos.response, idLokasi)
         dispatch({ type: 'loading' })
         const userLokal = await AsyncStorage.getItem('user');
         const userLogin = JSON.parse(userLokal);
@@ -43,8 +45,8 @@ const CheckpointContextProvider = (props) => {
             'Authorization': userLogin.token,
             'username': userLogin.username,
         }
-
-        const inputCheckpoint = await createFormData(photo.response, {idLokasi, keteranganCheckpoint})
+        // console.log(photos)
+        const inputCheckpoint = await createFormData(photos, {idLokasi, keteranganCheckpoint})
         // console.log(JSON.parse(inputCheckpoint))
         try {
             const response = await APICheckpoint.post('/checkpoint', inputCheckpoint , { headers: header });

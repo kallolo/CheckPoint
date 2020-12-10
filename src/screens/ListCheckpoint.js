@@ -18,9 +18,15 @@ const ListCheckpoint = () => {
         // console.log(item.item)
         return (
             <TouchableOpacity onPress={() => navigate('DetailListCheckpoint', { item: data.item })} style={{ justifyContent: 'center' }}>
-                <View style={{ padding: 20, marginHorizontal: 10, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: '#aaa' }}>
-                    <Text style={{ fontSize: 24, fontWeight: 'bold' }}>{data.item.detailUser.userName} ({data.item.detailUser.personalNIK})</Text>
-                    <Text style={{ fontSize: 14, color: 'gray' }}>{Moment(data.item.tanggalCheckpoint).format('D MMMM YYYY')}</Text>
+                <View style={{flexDirection:'row', justifyContent:'space-between', padding: 20, marginHorizontal: 10, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: '#aaa' }}>
+                    <View>
+                    <Text style={{ fontSize: 24, fontWeight: 'bold' }}>{data.item.detailPersonal.personalName}</Text>
+                    <Text style={{ fontSize: 20, fontWeight: 'bold', color:'grey' }}>NIK : {data.item.detailUser.personalNIK}</Text>
+                    </View>
+
+                    <View style={{backgroundColor:'green', justifyContent:'center', paddingHorizontal:15, borderRadius:30 , height:30}}>
+                        <Text style={{ fontSize: 16, color: 'white' }}>{data.item.jumlahCheckpoint}</Text>
+                    </View>
                 </View>
             </TouchableOpacity>
 
@@ -34,7 +40,7 @@ const ListCheckpoint = () => {
 
     return (
         <>
-            {showTanggal && <RNDateTimePicker mode="date" display="spinner" value={datePicker} maximumDate={new Date()} onChange={(event, date) => {
+            {showTanggal && <RNDateTimePicker mode="date" display="spinner" value={datePicker} maximumDate={new Date(Date.now() + 86400000)} onChange={(event, date) => {
                 if (date !== undefined) {
                     setShowTanggal(false),
                         setTanggal(Moment(date).format('YYYY-MM-DD')),

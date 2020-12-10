@@ -19,6 +19,9 @@ const RiwayatCheckpoint = () => {
     const [tanggal, setTanggal] = useState(Moment(now).format('YYYY-MM-DD'));
     const [shift, setShift] = useState('1');
     const [showTanggal, setShowTanggal] = useState(false)
+    const [imageTitle , setImageTitle] = useState('');
+    const [imageWaktu , setImageWaktu] = useState('');
+    const [imagesIndex, setImagesIndex] = useState(0);
 
     useEffect(()=>{
         getDetailCheckpoint(tanggal, shift, stateAuth.detailUser.personalNIK)
@@ -29,20 +32,30 @@ const RiwayatCheckpoint = () => {
             time: Moment(data.waktuCheckpoint).format('H:mm'),
             title: data.detailLokasi.namaLokasi,
             description: data.keteranganCheckpoint,
-            image: data.fotoCheckpoint
+            image: data.fotoCheckpoint,
+            datetime : Moment(data.waktuCheckpoint).format('D MMMM YYYY - H:mm')
         };
     });
 
     const DataImageCheckpoint = (image) => {
-        // console.log(image)
-        setImages([{ uri: "https://apiku.sambu.co.id/APICheckpoint/file/photo/" + image }])
+        const parseImage = JSON.parse(image)
+        const listFoto = parseImage.map((foto , key) => {
+            return {
+                uri : "https://apiku.sambu.co.id/APICheckpoint/file/photo/" + foto,
+            }
+        })
+        // console.log(listFoto)
+        setImages(listFoto)
     }
 
     const Detail = (rowData, sectionID, rowID) => {
         return (
             <TouchableOpacity onPress={() => {
                 setIsVisible(true),
-                    DataImageCheckpoint(rowData.image)
+                DataImageCheckpoint(rowData.image),
+                setImagesIndex(0),
+                setImageTitle(rowData.title)
+                setImageWaktu(rowData.datetime)
             }
             }>
                 <View style={{ flex: 1, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: '#aaa' }}>
@@ -53,16 +66,41 @@ const RiwayatCheckpoint = () => {
         )
     }
 
+    const HeaderImage = () =>{
+        // console.log('title')
+        return(<View style={{flexDirection:"row", justifyContent:"space-between", paddingLeft:15, paddingVertical:10, backgroundColor:"#00000077"}}>
+            <View style={{flexDirection:'column'}}>
+                <Text style={{color:'white' , fontSize:30}}>{imageTitle}</Text>
+                <Text style={{color:'white' , fontSize:20}}>{imageWaktu}</Text>
+            </View>
+            <View>
+            <TouchableOpacity onPress={() => setIsVisible(false)}>
+                <Text style={{color:'red', fontSize:25}}>✕</Text>
+            </TouchableOpacity>
+            </View>
+            
+        </View>)
+    } 
+    const ImageFooter = ({ imageIndex, imagesCount }) => {
+        // console.log(imageIndex)
+        return(<View style={{alignItems:"center"}}><Text style={{color:'white'}}>{`${imageIndex+1} / ${imagesCount}`}</Text></View>)
+    }
+   
     return (<>
     {/* tampil gambar */}
     <ImageView
             images={images}
             imageIndex={0}
             visible={visible}
+            presentationStyle="fullScreen"
             onRequestClose={() => setIsVisible(false)}
+            HeaderComponent={HeaderImage}
+            FooterComponent={({imageIndex}) => (
+                <ImageFooter imageIndex={imageIndex} imagesCount={images.length}/>
+            )}
         />
         {/* tampil gambar */}
-        {showTanggal && <RNDateTimePicker mode="date" display="spinner" value={datePicker} maximumDate={new Date()} onChange={(event, date) => {
+        {showTanggal && <RNDateTimePicker mode="date" display="spinner" value={datePicker} maximumDate={new Date(Date.now() + 86400000)} onChange={(event, date) => {
                 if (date !== undefined) {
                     setShowTanggal(false),
                         setTanggal(Moment(date).format('YYYY-MM-DD')),

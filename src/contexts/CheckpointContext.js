@@ -34,11 +34,12 @@ const CheckpointContextProvider = (props) => {
         return data;
     }
 
-    const kirimCheckpoint = async(photos , idLokasi, keteranganCheckpoint) =>{
+    const kirimCheckpoint = async(photos , idLokasi, keteranganCheckpoint, detailPertanyaan) =>{
         // console.log(photos.response, idLokasi)
         dispatch({ type: 'loading' })
         const userLokal = await AsyncStorage.getItem('user');
         const userLogin = JSON.parse(userLokal);
+        const jawaban = JSON.stringify(detailPertanyaan);
         const header = {
             'Accept': 'application/json',
             'Content-Type': 'multipart/form-data',
@@ -46,19 +47,30 @@ const CheckpointContextProvider = (props) => {
             'username': userLogin.username,
         }
         // console.log(photos)
-        const inputCheckpoint = await createFormData(photos, {idLokasi, keteranganCheckpoint})
-        // console.log(JSON.parse(inputCheckpoint))
-        try {
+        const inputCheckpoint = await createFormData(photos, {idLokasi, keteranganCheckpoint, jawaban})
+        let cekJawaban = detailPertanyaan.filter(o => o.jawaban === "");
+        // console.log(cekJawaban);
+        if(photos.length <= 0){
+            alert('Silahkan ambil foto minimal 1 foto');
+            dispatch({ type: 'stop-loading' })
+        }else if(cekJawaban.length > 0){
+            alert('Silahkan isi semua pertanyaan');
+            dispatch({ type: 'stop-loading' })
+        }else if(keteranganCheckpoint === ""){
+            alert('Silahkan isi keterangan');
+            dispatch({ type: 'stop-loading' })
+        }else{
+            try {
             const response = await APICheckpoint.post('/checkpoint', inputCheckpoint , { headers: header });
             dispatch({ type: 'stop-loading' })
             navigate('Home')
             // console.log(response);
-        } catch (err) {
+            } catch (err) {
             console.log(err)
             console.log("upload error", error);
             alert("Upload failed!");
+            }
         }
-
     }
 
     const getCheckpoint = async (tanggal, shift) => {

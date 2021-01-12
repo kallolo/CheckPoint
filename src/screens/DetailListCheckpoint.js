@@ -26,7 +26,8 @@ const DetailListCheckpoint = ({ navigation }) => {
             title: data.detailLokasi.namaLokasi,
             description: data.keteranganCheckpoint,
             image: data.fotoCheckpoint,
-            datetime : Moment(data.waktuCheckpoint).format('D MMMM YYYY - H:mm')
+            datetime : Moment(data.waktuCheckpoint).format('D MMMM YYYY - H:mm'),
+            listKeterangan: data.listKeterangan,
         };
     });
 
@@ -41,6 +42,20 @@ const DetailListCheckpoint = ({ navigation }) => {
         setImages(listFoto)
     }
 
+    const ComponentKeterangan = ({keterangan}) => (<>
+        {
+        keterangan.length <= 0 ? <Text style={{color:'red'}}>Jawaban Kosong</Text>
+        :
+        keterangan.map((r, i) =>{
+            return(<View key={i}>
+                <Text style={{fontSize:16}}>{r.pertanyaanDataKeterangan}</Text>
+                <Text style={{fontSize:14, color:'#59c3ad', fontWeight:'bold'}}>{r.jawabanDataKeterangan}</Text>
+            </View>);
+        })
+        }
+        </>
+    )
+
     const Detail = (rowData, sectionID, rowID) => {
         return (
             <TouchableOpacity onPress={() => {
@@ -52,7 +67,9 @@ const DetailListCheckpoint = ({ navigation }) => {
             }
             }>
                 <View style={{ flex: 1, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: '#aaa' }}>
-                    <Text style={{ fontSize: 16, fontWeight: 'bold' }}>{rowData.title} </Text>
+                    <Text style={{ fontSize: 22, fontWeight: 'bold' }}>{rowData.title} </Text>
+                    <ComponentKeterangan keterangan={rowData.listKeterangan}/>
+                    <Text style={{ fontSize : 16, marginTop:10, fontWeight:'bold'}}>Keterangan</Text>
                     <Text style={{ fontSize: 14, marginBottom:10 }}>{rowData.description} </Text>
                 </View>
             </TouchableOpacity>

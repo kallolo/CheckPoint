@@ -9,7 +9,9 @@ export const MasterLokasiContext = createContext();
 const MasterLokasiContextProvider = (props) => {
     const initialState = {
         isLoading: false,
-        masterLokasi: []
+        masterLokasi: [],
+        detailLokasi : [],
+        detailPertanyaan : [],
     }
 
     const [stateML, dispatch] = useReducer(masterLokasiReducer, initialState);
@@ -44,7 +46,7 @@ const MasterLokasiContextProvider = (props) => {
             try {
                 const response = await APICheckpoint.post('/master-lokasi', { namaLokasi, longitudeLokasi: longitude, latitudeLokasi: latitude }, { headers: header });
                 navigate('MasterLokasi')
-                console.log(response.data.data);
+                // console.log(response.data.data);
             } catch (err) {
                 console.log(err)
             }
@@ -72,7 +74,7 @@ const MasterLokasiContextProvider = (props) => {
             try {
                 const response = await APICheckpoint.put('/master-lokasi', { idLokasi, namaLokasi, longitudeLokasi: longitude, latitudeLokasi: latitude }, { headers: header });
                 navigate('MasterLokasi')
-                console.log(response.data.data);
+                // console.log(response.data.data);
             } catch (err) {
                 console.log(err)
             }
@@ -94,11 +96,50 @@ const MasterLokasiContextProvider = (props) => {
         try {
             const response = await APICheckpoint.delete(`/master-lokasi/${idLokasi}`, { headers: header });
             navigate('MasterLokasi')
-            console.log(response.data.data);
+            // console.log(response.data.data);
         } catch (err) {
             console.log(err)
         }
 
+    }
+
+    const detailMasterLokasi = async(idLokasi) => {
+        console.log(idLokasi);
+        try {
+          const response = await APICheckpoint.get(`master-lokasi/${idLokasi}`);
+          dispatch({ type: 'setDetailMasterLokasi', data: response.data.data });
+        //   console.log(response.data.data)
+        } catch (err) {
+            console.log(err)
+        }
+      }
+
+    const ambilPertanyaan = async(idLokasi) => {
+        console.log(idLokasi);
+        try {
+          const response = await APICheckpoint.get(`master-lokasi/${idLokasi}`);
+          const daftarPertanyaan = response.data.data.detailLokasi.daftarPertanyaan === null ? [] : response.data.data.detailLokasi.daftarPertanyaan;
+          
+        //   console.log(response.data.data)
+          const listPertanyaan = daftarPertanyaan.map((r, key) =>{
+            return {
+                pertanyaan : r.pertanyaanMasterKeterangan,
+                tipe : r.tipeMasterKeterangan,
+                options : r.optionsMasterKeterangan,
+                jawaban : '',
+            }
+          });
+          dispatch({ type: 'setPertanyaan', data: listPertanyaan });
+        //   console.log(listPertanyaan)
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    const handleInputJawaban = (index, event) => {
+        let newArray =[...stateML.detailPertanyaan]
+        newArray[index].jawaban  = event;
+        dispatch({type:'handleInputJawaban', data : newArray})
     }
 
     const refresh = async () => {
@@ -106,7 +147,7 @@ const MasterLokasiContextProvider = (props) => {
     }
 
     return (
-        <MasterLokasiContext.Provider value={{ stateML, dispatch, refresh, getMasterLokasi, addMasterLokasi, updateMasterLokasi, deleteMasterLokasi }}>
+        <MasterLokasiContext.Provider value={{ stateML, dispatch, refresh, getMasterLokasi, addMasterLokasi, updateMasterLokasi, deleteMasterLokasi, detailMasterLokasi, ambilPertanyaan, handleInputJawaban }}>
             {props.children}
         </MasterLokasiContext.Provider>
     )

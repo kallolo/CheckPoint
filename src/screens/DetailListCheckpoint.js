@@ -4,6 +4,7 @@ import Timeline from 'react-native-timeline-flatlist';
 import { CheckpointContext } from '../contexts/CheckpointContext';
 import ImageView from "react-native-image-viewing";
 import Moment from 'moment';
+import config from '../config';
 
 const DetailListCheckpoint = ({ navigation }) => {
     
@@ -35,7 +36,7 @@ const DetailListCheckpoint = ({ navigation }) => {
         const parseImage = JSON.parse(image)
         const listFoto = parseImage.map((foto , key) => {
             return {
-                uri : "https://apiku.sambu.co.id/APICheckpoint/file/photo/" + foto,
+                uri : `${config.backendURL}/file/photo/${foto}`,
             }
         })
         // console.log(listFoto)

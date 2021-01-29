@@ -7,6 +7,7 @@ import { RadioButton } from 'react-native-paper';
 import RNDateTimePicker from '@react-native-community/datetimepicker';
 import { AuthContext } from '../contexts/AuthContext';
 import { CheckpointContext } from '../contexts/CheckpointContext';
+import config from '../config';
 
 const RiwayatCheckpoint = () => {
     const {stateAuth} = useContext(AuthContext);
@@ -42,7 +43,7 @@ const RiwayatCheckpoint = () => {
         const parseImage = JSON.parse(image)
         const listFoto = parseImage.map((foto , key) => {
             return {
-                uri : "https://apiku.sambu.co.id/APICheckpoint/file/photo/" + foto,
+                uri : `${config.backendURL}/file/photo/${foto}`,
             }
         })
         // console.log(listFoto)

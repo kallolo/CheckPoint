@@ -17,7 +17,6 @@ const CheckPoint = () => {
     const [idLokasi, setIdLokasi] = useState('');
     const [keteranganCheckpoint, setKeteranganCheckpoint] = useState('')
     const [photos, setPhotos] = useState([]);
-    const [checked, setChecked] = useState('');
 
     useEffect(()=>{
         getMasterLokasi();
@@ -72,10 +71,11 @@ const CheckPoint = () => {
             inputanPertanyaan = optionsPertanyaan.map((o, i) => {
                 return(<View key={i} style={{flexDirection:'row', alignItems:'center'}}>
                     <RadioButton
+                    key={index}
                     value={o}
                     color='green'
-                    status={ checked === o ? 'checked' : 'unchecked' }
-                    onPress={() => {handleInputJawaban(index, o), setChecked(o)}}
+                    status={ stateML.detailPertanyaan[index].jawaban === o ? 'checked' : 'unchecked' }
+                    onPress={() => {handleInputJawaban(index, o)}}
                   /><Text style={{fontWeight:'bold'}}>{o}</Text>
                   </View>)
             });
@@ -123,7 +123,7 @@ const CheckPoint = () => {
             </View>
             {fotoDinamis}
             
-            <Button disabled={stateC.isLoading || !state.radius ? true : false} color="green" icon="camera" mode="contained" onPress={() => ImagePicker.launchCamera(
+            <Button disabled={stateC.isLoading || photos.length <= 0 && !state.radius ? true : false} color="green" icon="camera" mode="contained" onPress={() => ImagePicker.launchCamera(
               {
                 mediaType: 'photo',
                 includeBase64: false,
@@ -138,7 +138,7 @@ const CheckPoint = () => {
                     setPhotos(photos)
                   }
               },
-            )} contentStyle={{padding:10}} style={{marginVertical:5, borderRadius:10}}>{photos == "" ? "Ambil Foto" : "Tambah Foto"}</Button>
+            )} contentStyle={{padding:10}} style={{marginVertical:5, borderRadius:10}}>{photos.length <= 0 ? "Ambil Foto" : "Tambah Foto"}</Button>
              {/* <Text>{JSON.stringify(stateML.detailPertanyaan, null, 4)}</Text> */}
             {/* {cekPertanyaan} */}
             {
@@ -161,7 +161,7 @@ const CheckPoint = () => {
           
             <Button loading={stateC.isLoading} color="green" icon="check" mode="contained" onPress={() => kirimCheckpoint(photos, idLokasi, keteranganCheckpoint, stateML.detailPertanyaan )}
             disabled={
-                stateC.isLoading || photos==="" || !state.radius  ? true : false} 
+                stateC.isLoading || photos.length <= 0 || !state.radius  ? true : false} 
              contentStyle={{padding:20}} style={{marginVertical:5, borderRadius:10}}>{stateC.isLoading ? "Mengirim .." : "Check Point"}</Button>
         </View>
         </ScrollView>

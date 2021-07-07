@@ -7,6 +7,7 @@ import CheckpointContextProvider from './src/contexts/CheckpointContext';
 import LocationContextProvider from './src/contexts/LocationContext';
 import MasterLokasiContextProvider from './src/contexts/MasterLokasiContext';
 import { setNavigator } from './src/navigationRef';
+import CaraPenggunaan from './src/screens/CaraPenggunaan';
 import Cek from './src/screens/Cek';
 import CekLogin from './src/screens/CekLogin';
 import CheckPoint from './src/screens/CheckPoint';
@@ -66,6 +67,7 @@ const NavContent = createStackNavigator({
   DetailListCheckpoint: DetailListCheckpoint,
   RiwayatCheckpoint: RiwayatCheckpoint,
   TampilPeta: TampilPeta,
+  CaraPenggunaan : CaraPenggunaan,
   Contoh: {
     screen: Contoh,
     navigationOptions: {

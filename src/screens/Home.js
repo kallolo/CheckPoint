@@ -9,6 +9,7 @@ const Home = () => {
   const { stateAuth, LogOut } = useContext(AuthContext);
   const [isAdmin, setIsAdmin] = useState(false);
   const [isUser, setIsUser] = useState(false);
+  const [isKrWkr, setIsKrWkr] = useState(false);
   const [sapa, setSapa] = useState('');
   let Privileges = stateAuth.detailUser.userPrivilegesGroupId;
   let date = new Date();
@@ -17,11 +18,15 @@ const Home = () => {
   useEffect(() => {
     var admin = Privileges.match(/PG-AdminCheckpoint/g)
     var user = Privileges.match(/PG-UserCheckpoint/g)
+    var KrWkr = Privileges.match(/PG-KrWkrCheckpoint/g)
     if (admin !== null) {
       setIsAdmin(true);
     }
     if(user !== null){
       setIsUser(true);
+    }
+    if(KrWkr !== null){
+      setIsKrWkr(true);
     }
 
     //set sapaan 
@@ -42,6 +47,35 @@ const Home = () => {
       }
   })
 
+  const menu = () =>{
+    if(isAdmin){
+      return (<>
+        {/* <Button style={{ margin: 10 }} contentStyle={{ margin: 10 }} color="#007acc" icon="pencil" mode="contained" onPress={() => navigate('InputLokasi')}>Input Lokasi</Button> */}
+        <Button style={{ margin: 10, borderRadius:10 }} contentStyle={{ marginVertical: 25 }} color="#007acc" icon="map-marker-radius" mode="contained" onPress={() => navigate('MasterLokasi')}>Master Lokasi</Button>
+        <Button style={{ margin: 10, borderRadius:10 }} contentStyle={{ marginVertical: 25 }} color="#007acc" icon="check" mode="contained" onPress={() => navigate('CheckPoint')}>Checkpoint</Button>
+        <Button style={{ margin: 10, borderRadius:10 }} contentStyle={{ marginVertical: 25 }} color="#007acc" icon="format-list-checkbox" mode="contained" onPress={() => navigate('ListCheckpoint')}>List Checkpoint</Button>
+        <Button style={{ margin: 10, borderRadius:10 }} contentStyle={{ marginVertical: 25 }} color="#007acc" icon="help" mode="contained" onPress={() => navigate('CaraPenggunaan')}>Cara Penggunaan</Button>
+      </>)
+    }else if(isKrWkr){
+      return(<>
+      <Button style={{ margin: 10, borderRadius:10 }} contentStyle={{ marginVertical: 25 }} color="#007acc" icon="check" mode="contained" onPress={() => navigate('CheckPoint')}>Checkpoint</Button>
+      <Button style={{ margin: 10, borderRadius:10 }} contentStyle={{ marginVertical: 25 }} color="#007acc" icon="format-list-checkbox" mode="contained" onPress={() => navigate('RiwayatCheckpoint')}>Riwayat Checkpoint</Button>
+      <Button style={{ margin: 10, borderRadius:10 }} contentStyle={{ marginVertical: 25 }} color="#007acc" icon="format-list-checkbox" mode="contained" onPress={() => navigate('ListCheckpoint')}>List Checkpoint</Button>
+        <Button style={{ margin: 10, borderRadius:10 }} contentStyle={{ marginVertical: 25 }} color="#007acc" icon="help" mode="contained" onPress={() => navigate('CaraPenggunaan')}>Cara Penggunaan</Button>
+      </>
+      )
+    }else if(isUser){
+      return(<>
+        <Button style={{ margin: 10, borderRadius:10 }} contentStyle={{ marginVertical: 25 }} color="#007acc" icon="check" mode="contained" onPress={() => navigate('CheckPoint')}>Checkpoint</Button>
+        <Button style={{ margin: 10, borderRadius:10 }} contentStyle={{ marginVertical: 25 }} color="#007acc" icon="format-list-checkbox" mode="contained" onPress={() => navigate('RiwayatCheckpoint')}>Riwayat Checkpoint</Button>
+        <Button style={{ margin: 10, borderRadius:10 }} contentStyle={{ marginVertical: 25 }} color="#007acc" icon="help" mode="contained" onPress={() => navigate('CaraPenggunaan')}>Cara Penggunaan</Button>
+      </>)
+    }else{
+      return ( <Text style={{color:'red', textAlign:'center'}}>Tidak Ada Akses Menu</Text>)
+    }
+
+  }
+
   return (<>
    <StatusBar backgroundColor="#007acc" />
   <View style={{height:120, backgroundColor:'#007acc', alignItems:'center'}}>
@@ -53,25 +87,7 @@ const Home = () => {
     </View>
   
     <View style={{ marginHorizontal: 30, marginTop:10}}>
-      {
-        isAdmin ?
-          (<>
-            {/* <Button style={{ margin: 10 }} contentStyle={{ margin: 10 }} color="#007acc" icon="pencil" mode="contained" onPress={() => navigate('InputLokasi')}>Input Lokasi</Button> */}
-            <Button style={{ margin: 10, borderRadius:10 }} contentStyle={{ marginVertical: 25 }} color="#007acc" icon="map-marker-radius" mode="contained" onPress={() => navigate('MasterLokasi')}>Master Lokasi</Button>
-            <Button style={{ margin: 10, borderRadius:10 }} contentStyle={{ marginVertical: 25 }} color="#007acc" icon="check" mode="contained" onPress={() => navigate('CheckPoint')}>Checkpoint</Button>
-            <Button style={{ margin: 10, borderRadius:10 }} contentStyle={{ marginVertical: 25 }} color="#007acc" icon="format-list-checkbox" mode="contained" onPress={() => navigate('ListCheckpoint')}>List Checkpoint</Button>
-            <Button style={{ margin: 10, borderRadius:10 }} contentStyle={{ marginVertical: 25 }} color="#007acc" icon="help" mode="contained" onPress={() => navigate('CaraPenggunaan')}>Cara Penggunaan</Button>
-          </>)
-          : 
-          isUser ?  (<>
-            <Button style={{ margin: 10, borderRadius:10 }} contentStyle={{ marginVertical: 25 }} color="#007acc" icon="check" mode="contained" onPress={() => navigate('CheckPoint')}>Checkpoint</Button>
-            <Button style={{ margin: 10, borderRadius:10 }} contentStyle={{ marginVertical: 25 }} color="#007acc" icon="format-list-checkbox" mode="contained" onPress={() => navigate('RiwayatCheckpoint')}>Riwayat Checkpoint</Button>
-            <Button style={{ margin: 10, borderRadius:10 }} contentStyle={{ marginVertical: 25 }} color="#007acc" icon="help" mode="contained" onPress={() => navigate('CaraPenggunaan')}>Cara Penggunaan</Button>
-          </>)
-          : // tidak ada akses
-          <Text style={{color:'red', textAlign:'center'}}>Tidak Ada Akses Menu</Text>
-      }
-
+      {menu()}
       <Button style={{ margin: 10, borderRadius:10 }} contentStyle={{ margin: 10 }} color="red" icon="logout" mode="contained" onPress={() => {
         Alert.alert('Info', 'Apakah anda yakin keluar ?',
           [

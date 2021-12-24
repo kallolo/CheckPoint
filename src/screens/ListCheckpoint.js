@@ -3,16 +3,22 @@ import { Text, View, FlatList, StyleSheet, TouchableOpacity, Image, ActivityIndi
 import { RadioButton } from 'react-native-paper';
 import RNDateTimePicker from '@react-native-community/datetimepicker';
 import { CheckpointContext } from '../contexts/CheckpointContext';
+import { AuthContext } from '../contexts/AuthContext';
 import { navigate } from '../navigationRef';
 import Moment from 'moment';
 
 const ListCheckpoint = () => {
     const now = new Date();
     const { stateC, getCheckpoint } = useContext(CheckpointContext);
+    const { stateAuth } = useContext(AuthContext);
     const [datePicker, setDatePicker] = useState(now)
     const [tanggal, setTanggal] = useState(Moment(now).format('YYYY-MM-DD'));
     const [shift, setShift] = useState('1');
-    const [showTanggal, setShowTanggal] = useState(false)
+    const [showTanggal, setShowTanggal] = useState(false);
+    const [listPersonil , setListPersonil] = useState([]);
+    const [aksesList , setAksesList] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
+    let Privileges = stateAuth.detailUser.userPrivilegesGroupId;
 
     const listDataCheckpoint = (data) => {
         // console.log(item.item)
@@ -35,8 +41,46 @@ const ListCheckpoint = () => {
 
     useEffect(() => {
         getCheckpoint(tanggal, shift);
+       
     }, [tanggal, shift]);
 
+    useEffect(()=>{
+        // console.log(stateAuth.detailUser.personalNIK);
+        setListPersonil(stateC.listCheckpoint);
+    },[stateC.listCheckpoint])
+
+    useEffect(()=>{
+        let checkShiftKrWkr = listPersonil ? listPersonil.filter(item => item.detailPersonal.personalNIK === stateAuth.detailUser.personalNIK) : [];
+        checkShiftKrWkr.length > 0 ? setAksesList(true) : setAksesList(false);
+    },[listPersonil]);
+
+    useEffect(()=>{
+        var admin = Privileges.match(/PG-AdminCheckpoint/g)
+        if (admin !== null) {
+          setIsAdmin(true);
+        }
+
+    },[]);
+
+    const list = () => { //membedakan admin dan kr wkr
+        if(isAdmin){
+            return(<FlatList
+                data={stateC.listCheckpoint}
+                renderItem={(data) => listDataCheckpoint(data)}
+                keyExtractor={(data, index) => index.toString()}
+            />)
+        }else{
+            return aksesList ? (<FlatList
+                data={stateC.listCheckpoint}
+                renderItem={(data) => listDataCheckpoint(data)}
+                keyExtractor={(data, index) => index.toString()}
+            />) : (<View style={{ alignContent: 'center', alignItems: 'center' }}>
+            <Image
+                style={{ marginTop: 20, height: 300, width: 300 }}
+                source={require('../assets/img/no-access.png')}
+            /><Text style={{ color: '#007acc', fontSize: 25 }}>Bukan Shift Anda</Text></View>)
+        }
+    }
 
     return (
         <>
@@ -83,11 +127,7 @@ const ListCheckpoint = () => {
                             style={{ marginTop: 20, height: 300, width: 300 }}
                             source={require('../assets/img/no-data.png')}
                         /><Text style={{ color: '#007acc', fontSize: 25 }}>Data Kosong</Text></View>)
-                    : (<FlatList
-                        data={stateC.listCheckpoint}
-                        renderItem={(data) => listDataCheckpoint(data)}
-                        keyExtractor={(data, index) => index.toString()}
-                    />)}
+                    : list()}
         </>);
 }
 

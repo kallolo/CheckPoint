@@ -134,8 +134,13 @@ const CheckPoint = () => {
                   if(response.didCancel){
                       console.log('batal pilih gambar')
                   }else{
-                    photos.push({response})
-                    setPhotos(photos)
+                      if(response.error){
+                            console.log('ambil gambar gagal')
+                      }else{
+                        console.log(response)
+                        photos.push({response})
+                        setPhotos(photos)
+                      }
                   }
               },
             )} contentStyle={{padding:10}} style={{marginVertical:5, borderRadius:10}}>{photos.length <= 0 ? "Ambil Foto" : "Tambah Foto"}</Button>

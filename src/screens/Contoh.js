@@ -1,5 +1,4 @@
-
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   Alert,
   Button,
@@ -55,8 +54,8 @@ export default class Contoh extends Component {
         `Turn on Location Services to allow "${appConfig.displayName}" to determine your location.`,
         '',
         [
-          { text: 'Go to Settings', onPress: openSetting },
-          { text: "Don't Use Location", onPress: () => {} },
+          {text: 'Go to Settings', onPress: openSetting},
+          {text: "Don't Use Location", onPress: () => {}},
         ],
       );
     }
@@ -112,14 +111,14 @@ export default class Contoh extends Component {
       return;
     }
 
-    this.setState({ loading: true }, () => {
+    this.setState({loading: true}, () => {
       Geolocation.getCurrentPosition(
         (position) => {
-          this.setState({ location: position, loading: false });
+          this.setState({location: position, loading: false});
           console.log(position);
         },
         (error) => {
-          this.setState({ location: error, loading: false });
+          this.setState({location: error, loading: false});
           console.log(error);
         },
         {
@@ -145,14 +144,14 @@ export default class Contoh extends Component {
       await this.startForegroundService();
     }
 
-    this.setState({ updatesEnabled: true }, () => {
+    this.setState({updatesEnabled: true}, () => {
       this.watchId = Geolocation.watchPosition(
         (position) => {
-          this.setState({ location: position });
+          this.setState({location: position});
           console.log(position);
         },
         (error) => {
-          this.setState({ location: error });
+          this.setState({location: error});
           console.log(error);
         },
         {
@@ -173,7 +172,7 @@ export default class Contoh extends Component {
       this.stopForegroundService();
       Geolocation.clearWatch(this.watchId);
       this.watchId = null;
-      this.setState({ updatesEnabled: false });
+      this.setState({updatesEnabled: false});
     }
   };
 
@@ -202,12 +201,11 @@ export default class Contoh extends Component {
     }
   };
 
-  setAccuracy = (value) => this.setState({ highAccuracy: value });
-  setSignificantChange = (value) =>
-    this.setState({ significantChanges: value });
-  setLocationDialog = (value) => this.setState({ showLocationDialog: value });
-  setForceLocation = (value) => this.setState({ forceLocation: value });
-  setForegroundService = (value) => this.setState({ foregroundService: value });
+  setAccuracy = (value) => this.setState({highAccuracy: value});
+  setSignificantChange = (value) => this.setState({significantChanges: value});
+  setLocationDialog = (value) => this.setState({showLocationDialog: value});
+  setForceLocation = (value) => this.setState({forceLocation: value});
+  setForegroundService = (value) => this.setState({foregroundService: value});
 
   render() {
     const {

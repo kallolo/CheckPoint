@@ -1,12 +1,16 @@
 import React from 'react';
-import { DefaultTheme, configureFonts, Provider as PaperProvider } from 'react-native-paper';
-import { createAppContainer, createSwitchNavigator } from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack';
+import {
+  DefaultTheme,
+  configureFonts,
+  Provider as PaperProvider,
+} from 'react-native-paper';
+import {createAppContainer, createSwitchNavigator} from 'react-navigation';
+import {createStackNavigator} from 'react-navigation-stack';
 import AuthContextProvider from './src/contexts/AuthContext';
 import CheckpointContextProvider from './src/contexts/CheckpointContext';
 import LocationContextProvider from './src/contexts/LocationContext';
 import MasterLokasiContextProvider from './src/contexts/MasterLokasiContext';
-import { setNavigator } from './src/navigationRef';
+import {setNavigator} from './src/navigationRef';
 import CaraPenggunaan from './src/screens/CaraPenggunaan';
 import Cek from './src/screens/Cek';
 import CekLogin from './src/screens/CekLogin';
@@ -46,7 +50,7 @@ const fontConfig = {
 
 const theme = {
   ...DefaultTheme,
-  fonts : configureFonts(fontConfig),
+  fonts: configureFonts(fontConfig),
   roundness: 2,
   colors: {
     ...DefaultTheme.colors,
@@ -54,7 +58,7 @@ const theme = {
     accent: '#f1c40f',
   },
 };
-const NavAuth = createStackNavigator({ Login: Login })
+const NavAuth = createStackNavigator({Login: Login});
 const NavContent = createStackNavigator({
   Home: Home,
   Cek: Cek,
@@ -67,19 +71,19 @@ const NavContent = createStackNavigator({
   DetailListCheckpoint: DetailListCheckpoint,
   RiwayatCheckpoint: RiwayatCheckpoint,
   TampilPeta: TampilPeta,
-  CaraPenggunaan : CaraPenggunaan,
+  CaraPenggunaan: CaraPenggunaan,
   Contoh: {
     screen: Contoh,
     navigationOptions: {
       title: 'Contoh',
-    }
+    },
   },
 });
 
 const SwitchNavigator = createSwitchNavigator({
   CekLogin: CekLogin,
   Auth: NavAuth,
-  Content: NavContent
+  Content: NavContent,
 });
 
 const AppContainer = createAppContainer(SwitchNavigator);
@@ -97,5 +101,5 @@ export default () => {
         </LocationContextProvider>
       </AuthContextProvider>
     </PaperProvider>
-  )
-}
+  );
+};

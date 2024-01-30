@@ -1,11 +1,10 @@
-
-import React, { useContext } from 'react';
-import { View, StyleSheet, StatusBar } from 'react-native';
-import { AuthContext } from '../contexts/AuthContext';
+import React, {useContext} from 'react';
+import {View, StyleSheet, StatusBar} from 'react-native';
+import {AuthContext} from '../contexts/AuthContext';
 import LoginForm from '../components/LoginForm';
 
 const Login = () => {
-  const { Login, viewPassword, stateAuth } = useContext(AuthContext);
+  const {Login, viewPassword, stateAuth} = useContext(AuthContext);
   // console.log(stateAuth)
   return (
     <View style={styles.container}>
@@ -17,11 +16,11 @@ const Login = () => {
       />
     </View>
   );
-}
+};
 
 Login.navigationOptions = {
-  header: () => false
-}
+  header: () => false,
+};
 
 const styles = StyleSheet.create({
   container: {
